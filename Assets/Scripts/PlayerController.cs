@@ -30,6 +30,16 @@ public class PlayerController : MonoBehaviour
         private set;
     }
 
+    // physics stuff
+    private struct PlayerColliderInfo
+    {
+        public float height;
+        public Vector3 center;
+    }
+    private CapsuleCollider playerCollider;
+    private const float PLAYER_UPRIGHT_HEIGHT = 1.7f;
+    private PlayerColliderInfo playerColliderInfo;
+
     private bool IsOnGround()
     {
         // use a sphere-cast to check if we are on what we consider ground
@@ -43,6 +53,11 @@ public class PlayerController : MonoBehaviour
         m_RunAxis = new Vector3(0.0f, rb.position.y, rb.position.z);
         isDoingMovementFromInput = false;
         shouldContinueMoving = true;
+
+        // cache stuff about player collider
+        playerCollider = GetComponent<CapsuleCollider>();
+        playerColliderInfo.height = playerCollider.height;
+        playerColliderInfo.center = playerCollider.center;
     }
 
     // Called by input system package
@@ -113,6 +128,7 @@ public class PlayerController : MonoBehaviour
             }
             else if(movementY < 0.0f)     // slide
             {
+                ConfigureSliding(true);
                 animator.SetBool("isSliding", true);
             }
         }
@@ -157,8 +173,33 @@ public class PlayerController : MonoBehaviour
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("run_slide"))
         {
             if (!(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f))
+            {
                 return false;
+            }
+            else
+            {
+                ConfigureSliding(false);
+            }
         }
         return can;
+    }
+
+    private void ConfigureSliding(bool isSliding)
+    {
+        if (isSliding)
+        {
+            const float colliderheight = 1f;
+            Vector3 collidercenter = new Vector3(0.0f, 0.5f, 0.0f);
+
+            playerCollider.center = collidercenter;
+            playerCollider.height = colliderheight;
+        }
+        else
+        {
+            playerCollider.center = playerColliderInfo.center;
+            playerCollider.height = playerColliderInfo.height;
+        }
+
+
     }
 }
