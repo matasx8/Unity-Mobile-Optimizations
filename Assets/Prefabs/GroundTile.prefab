@@ -134,7 +134,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8653895653406707431}
   - component: {fileID: 1185859296}
-  - component: {fileID: 1185859295}
+  - component: {fileID: 6948270673201827748}
   m_Layer: 0
   m_Name: GroundTile
   m_TagString: Untagged
@@ -174,8 +174,8 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 2
   m_Size: {x: 10, y: 10, z: 10}
-  m_Center: {x: 0, y: 0, z: 10}
---- !u!114 &1185859295
+  m_Center: {x: 0, y: 0, z: 50}
+--- !u!114 &6948270673201827748
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -187,12 +187,13 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8b22696f4618bf4aabf7767995adb30, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  regularObstacle: {fileID: 4175625774313131166, guid: 6c4693902195cfc4a882412447a68076,
+  Obstacles:
+  - {fileID: 7322759411840648470, guid: 5bc817730f8c9424a9bd754bf55e4280, type: 3}
+  - {fileID: 6391404137161603232, guid: 6c4693902195cfc4a882412447a68076, type: 3}
+  - {fileID: 5676308508659517376, guid: 732f6b0ec2f30c746b98d0f6b0e627be, type: 3}
+  platformRenderer: {fileID: 4639948706524645508, guid: 48ab8449fad3e6f44b372973640a3423,
     type: 3}
-  jumpObstacle: {fileID: 6523844955013177413, guid: 5bc817730f8c9424a9bd754bf55e4280,
-    type: 3}
-  slideObstacle: {fileID: 6347318585656788426, guid: 732f6b0ec2f30c746b98d0f6b0e627be,
-    type: 3}
+  numberOfObstaclesToSpawn: 12
 --- !u!1001 &1900047233822523897
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -204,6 +205,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 213706563581428285, guid: 48ab8449fad3e6f44b372973640a3423,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 100
       objectReference: {fileID: 0}
     - target: {fileID: 8448010668990008408, guid: 48ab8449fad3e6f44b372973640a3423,
         type: 3}
