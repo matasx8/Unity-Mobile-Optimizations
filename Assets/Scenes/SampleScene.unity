@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4465791, g: 0.4964133, b: 0.57481784, a: 1}
+  m_IndirectSpecularColor: {r: 0.44407046, g: 0.49331486, b: 0.57238823, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -190,6 +190,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: GroundSpawner
       objectReference: {fileID: 0}
+    - target: {fileID: 6440616258732239671, guid: 7d8b576ffde67f044aa4e2581978dc3b,
+        type: 3}
+      propertyPath: tileNumber
+      value: 10
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7d8b576ffde67f044aa4e2581978dc3b, type: 3}
 --- !u!1001 &894728024
@@ -222,7 +227,7 @@ PrefabInstance:
     - target: {fileID: 3517951696272323892, guid: d4d1d07fca29c7342a743ec6a10b5aef,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -8
+      value: -50
       objectReference: {fileID: 0}
     - target: {fileID: 3517951696272323892, guid: d4d1d07fca29c7342a743ec6a10b5aef,
         type: 3}
@@ -258,6 +263,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9198784551548458478, guid: d4d1d07fca29c7342a743ec6a10b5aef,
+        type: 3}
+      propertyPath: m_Height
+      value: 1.7270558
+      objectReference: {fileID: 0}
+    - target: {fileID: 9198784551548458478, guid: d4d1d07fca29c7342a743ec6a10b5aef,
+        type: 3}
+      propertyPath: m_Radius
+      value: 0.34
+      objectReference: {fileID: 0}
+    - target: {fileID: 9198784551548458478, guid: d4d1d07fca29c7342a743ec6a10b5aef,
+        type: 3}
+      propertyPath: m_Center.y
+      value: 0.8635279
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d1d07fca29c7342a743ec6a10b5aef, type: 3}
