@@ -61,7 +61,7 @@ public class SwipeDetection : Singleton<SwipeDetection>
             Debug.DrawLine(startPosition, endPosition, Color.red, 1.0f);
             var direction = endPosition - startPosition;
             Vector2 direction2D = new Vector2(direction.x, direction.y).normalized;
-            OnSwiped(direction2D);
+            OnSwiped(SwipeDirection(direction2D));
         }
     }
 

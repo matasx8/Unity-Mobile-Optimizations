@@ -496,7 +496,7 @@ PrefabInstance:
     - target: {fileID: 3517951696272323892, guid: d4d1d07fca29c7342a743ec6a10b5aef,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -134.3
+      value: -82.83
       objectReference: {fileID: 0}
     - target: {fileID: 3517951696272323892, guid: d4d1d07fca29c7342a743ec6a10b5aef,
         type: 3}
@@ -577,7 +577,7 @@ GameObject:
   - component: {fileID: 1050440941}
   - component: {fileID: 1050440940}
   - component: {fileID: 1050440939}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Plane
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -696,7 +696,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   minimumDistance: 0.2
   maximumTime: 1
-  directionThreshold: 0.103
+  directionThreshold: 0.5
 --- !u!114 &1307439190
 MonoBehaviour:
   m_ObjectHideFlags: 0
