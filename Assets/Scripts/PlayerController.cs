@@ -6,6 +6,8 @@ using UnityEngine.InputSystem;
 // player movement is kind of buggy but gonna be good enough unless someone fixes it
 public class PlayerController : MonoBehaviour
 {
+    SwipeDetection swipeDetection;
+
     [Header("Movement Settings")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float fwdForce;
@@ -40,6 +42,21 @@ public class PlayerController : MonoBehaviour
     private const float PLAYER_UPRIGHT_HEIGHT = 1.7f;
     private PlayerColliderInfo playerColliderInfo;
 
+    private void Awake()
+    {
+        swipeDetection = SwipeDetection.Instance;
+    }
+
+    private void OnEnable()
+    {
+        swipeDetection.OnSwiped += OnSwiped;
+    }
+
+    private void OnDisable()
+    {
+        swipeDetection.OnSwiped -= OnSwiped;
+    }
+
     private bool IsOnGround()
     {
         // use a sphere-cast to check if we are on what we consider ground
@@ -60,17 +77,34 @@ public class PlayerController : MonoBehaviour
         playerColliderInfo.center = playerCollider.center;
     }
 
+    void OnSwiped(Vector2 dir)
+    {
+        if (!isDoingMovementFromInput)
+        {
+            Vector2 movementVector = dir;
+            //Debug.Log(movementVector);
+            movementX = movementVector.x;
+            movementY = movementVector.y;
+#if DEBUG_MOVEMENT
+            Debug.Log(movementX);
+#endif 
+            if (movementX != 0.0f)
+                UpdateRunAxis(movementX);
+        }
+    }
+
     // Called by input system package
     private void OnMove(InputValue movementValue)
     {
         if (!isDoingMovementFromInput)
         {
             Vector2 movementVector = movementValue.Get<Vector2>();
+            Debug.Log(movementVector);
             movementX = movementVector.x;
             movementY = movementVector.y;
 #if DEBUG_MOVEMENT
             Debug.Log(movementX);
-#endif
+#endif 
             if (movementX != 0.0f)
                 UpdateRunAxis(movementX);
         }
@@ -144,6 +178,9 @@ public class PlayerController : MonoBehaviour
         HandleJumpOrSlide();
 
     }
+
+        movementX = 0;
+        movementY = 0;
 
 #if DEBUG_MOVEMENT
         //Debug.Log("Animator state: " + animator.GetBool("isRunningLeft").ToString() + " - " + animator.GetBool("isRunningRight").ToString());
