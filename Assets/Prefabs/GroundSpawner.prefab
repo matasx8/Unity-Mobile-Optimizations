@@ -46,4 +46,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   groundTile: {fileID: 8653895653406707432, guid: e8fddc60c68903c4089f08c4dbc3caee,
     type: 3}
-  tileNumber: 20
+  tileNumber: 10
