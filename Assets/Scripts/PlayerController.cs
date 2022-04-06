@@ -2,12 +2,12 @@
 
 using UnityEngine;
 using UnityEngine.InputSystem;
-
+using UnityEngine.SceneManagement;
 // player movement is kind of buggy but gonna be good enough unless someone fixes it
 public class PlayerController : MonoBehaviour
 {
     SwipeDetection swipeDetection;
-
+    bool alive = true;
     [Header("Movement Settings")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float fwdForce;
@@ -31,7 +31,7 @@ public class PlayerController : MonoBehaviour
         get;
         private set;
     }
-
+    
     // physics stuff
     private struct PlayerColliderInfo
     {
@@ -117,7 +117,7 @@ public class PlayerController : MonoBehaviour
         // this is a TODO for someone :)
         // if someone does decide to do this please try to fix this without changing much
         // you should be able to smooth out the velocity or force somehow
-
+        if(!alive) return;
         var playerPosToTargetedRunAxis = m_RunAxis.x - transform.position.x;
         float strafeSpeed;
         float fwdSpeed;
@@ -147,6 +147,7 @@ public class PlayerController : MonoBehaviour
         fwdSpeed = rb.velocity.z > targetFwdSpeed ? fwdForce : 0;
 
         //if(IsOnGround())
+        
             rb.AddForce(strafeSpeed * Time.deltaTime, 0.0f, fwdForce * Time.deltaTime);
     }
 
@@ -178,7 +179,9 @@ public class PlayerController : MonoBehaviour
         HandleJumpOrSlide();
 
     }
-
+    if(transform.position.y < -5)
+        Die();
+        
         movementX = 0;
         movementY = 0;
 
@@ -236,7 +239,17 @@ public class PlayerController : MonoBehaviour
             playerCollider.center = playerColliderInfo.center;
             playerCollider.height = playerColliderInfo.height;
         }
-
-
+    }
+    public void Die ()
+    {
+        alive = false;
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+    //TODO: tags aren't working and obstacle names are "Cube"
+    void OnCollisionEnter (Collision collision){
+        //Kill the player
+        if(collision.collider.name == "Cube")
+            Die();
+        
     }
 }
