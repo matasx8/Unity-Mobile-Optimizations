@@ -7,7 +7,8 @@ using UnityEngine.SceneManagement;
 public class PlayerController : MonoBehaviour
 {
     SwipeDetection swipeDetection;
-    bool alive = true;
+    public bool alive = true;
+    public GameOverUI GameOverUI;
     [Header("Movement Settings")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float fwdForce;
@@ -243,7 +244,8 @@ public class PlayerController : MonoBehaviour
     public void Die ()
     {
         alive = false;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+        GameOverUI.GetGameOver();
+        
     }
     //TODO: tags aren't working and obstacle names are "Cube"
     void OnCollisionEnter (Collision collision){

@@ -851,6 +851,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 89fc552dd29051445bff7d8691be8e38, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  alive: 1
+  GameOverUI: {fileID: 0}
   rb: {fileID: 7128798854024576477}
   fwdForce: 2500
   sideForce: 2000
