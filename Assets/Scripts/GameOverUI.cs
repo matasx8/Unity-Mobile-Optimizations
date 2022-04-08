@@ -7,13 +7,4 @@ public class GameOverUI : MonoBehaviour
     {
         gameObject.SetActive(true);
     }
-    public void RestartButton()
-    {
-        Debug.Log("clicked batton");
-        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
-    }
-    public void ExitButton()
-    {
-        //SceneManager.LoadScene("MainMenu");
-    }
 }
