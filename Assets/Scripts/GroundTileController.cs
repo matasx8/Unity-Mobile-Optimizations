@@ -36,6 +36,11 @@ public class GroundTileController: MonoBehaviour
         return Obstacles[Random.Range(0, 3)];
     }
 
+    GameObject GetRandomRangeObstacle(int exclusive)
+    {
+        return Obstacles[Random.Range(0, exclusive)];
+    }
+
 
     void SpawnObstacles()
     {
@@ -45,14 +50,40 @@ public class GroundTileController: MonoBehaviour
         // spawn obstacles
         var PatternForObstacles = GetRandomPatternForObstacles(Spawns.Count, 0xdeadbeef);
 
-        for(int i = 0; i < Spawns.Count; i++)
+        for (int i = 0; i < Spawns.Count; i+= 3)
         {
-            if(PatternForObstacles[i])
+            int numSpawns = 0;
+            for(int j = 0; j < 3; j++)
             {
-                Instantiate(GetRandomObstacle(), Spawns[i], Quaternion.identity, transform);
+                numSpawns += PatternForObstacles[i + j] ? 1 : 0;
             }
 
+            if(numSpawns == 3)
+            {
+
+                // lets make sure we don't get 3 regular obstacles in a row
+                // regular obstacle should be nr 3
+                int determinedPassableIdx = Random.Range(0, 3);
+                for (int j = 0; j < 3; j++)
+                {
+                    if(j != determinedPassableIdx)
+                        Instantiate(GetRandomObstacle(), Spawns[i + j], Quaternion.identity, transform);
+                    else
+                        Instantiate(GetRandomRangeObstacle(2), Spawns[i + j], Quaternion.identity, transform);
+                }
+            }
+            else
+            {
+                for(int j = 0; j < 3; j++)
+                {
+                    if(PatternForObstacles[i + j])
+                    {
+                        Instantiate(GetRandomObstacle(), Spawns[i + j], Quaternion.identity, transform);
+                    }
+                }
+            }
         }
+
     }
 
     // We can use this to generate something more fancy with the randomness
@@ -67,9 +98,9 @@ public class GroundTileController: MonoBehaviour
 
         for (int i = 0; i < len; i += 3)
         {
-            int idxForNoObstacle = Random.Range(0, 3);
+            int idxForNoObstacle = Random.Range(0, 4);
 
-            for(int j = 0; j < 3; j++)
+            for (int j = 0; j < 3; j++)
                 Pattern.Add(j != idxForNoObstacle);
 
         }
