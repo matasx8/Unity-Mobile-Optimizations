@@ -1,5 +1,6 @@
 #define DEBUG_MOVEMENT
 
+using System.Linq;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
@@ -23,6 +24,7 @@ public class PlayerController : MonoBehaviour
 
     [Header("Animation Settings")]
     [SerializeField] private Animator animator;
+    [SerializeField] private Collider mainCollider;
 
     private float movementX;
     private float movementY;
@@ -246,8 +248,28 @@ public class PlayerController : MonoBehaviour
     }
     public void Die ()
     {
-        alive = false;
-        GameOverUI.GetGameOver();
+        if (alive)
+        {
+            alive = false;
+
+            // disable stuff
+            animator.enabled = false;
+
+            // enable ragdoll
+            var Colliders = GetComponentsInChildren<Collider>();
+            foreach (var col in Colliders)
+                col.enabled = true;
+
+            Colliders.Select(col => col.enabled = true);
+            var Rbs = GetComponentsInChildren<Rigidbody>();
+            foreach (var rib in Rbs)
+            {
+                rib.isKinematic = false;
+            }
+            mainCollider.enabled = false;
+
+            GameOverUI.GetGameOver();
+        }
         
     }
 

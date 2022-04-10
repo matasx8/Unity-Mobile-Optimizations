@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.4440287, g: 0.49317193, b: 0.5722371, a: 1}
+  m_IndirectSpecularColor: {r: 0.44407046, g: 0.49331486, b: 0.57238823, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -271,11 +271,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 3625533285023074071, guid: d4d1d07fca29c7342a743ec6a10b5aef,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 5402492737206764058, guid: d4d1d07fca29c7342a743ec6a10b5aef,
         type: 3}
       propertyPath: m_Camera
@@ -283,19 +278,9 @@ PrefabInstance:
       objectReference: {fileID: 792789673}
     - target: {fileID: 5728413841083478216, guid: d4d1d07fca29c7342a743ec6a10b5aef,
         type: 3}
-      propertyPath: fwdForce
-      value: 3000
-      objectReference: {fileID: 0}
-    - target: {fileID: 5728413841083478216, guid: d4d1d07fca29c7342a743ec6a10b5aef,
-        type: 3}
       propertyPath: GameOverUI
       value: 
       objectReference: {fileID: 1225802427}
-    - target: {fileID: 8069191764456130519, guid: d4d1d07fca29c7342a743ec6a10b5aef,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4d1d07fca29c7342a743ec6a10b5aef, type: 3}
 --- !u!1 &1026976583
@@ -1025,6 +1010,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Main Camera
+      objectReference: {fileID: 0}
+    - target: {fileID: 8310146540330033577, guid: 5c6c6fad96413494e93da97a0df27e8f,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8310146540330033579, guid: 5c6c6fad96413494e93da97a0df27e8f,
         type: 3}
