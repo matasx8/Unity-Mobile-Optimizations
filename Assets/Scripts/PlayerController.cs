@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     [Header("Movement Settings")]
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float fwdForce;
+    [SerializeField] private float fwdForceCap;
     [SerializeField] private float sideForce;
     [SerializeField] private float jumpSpeed;
     [SerializeField] private float m_SwipeMovementOnX = 3.0f;
@@ -113,11 +114,6 @@ public class PlayerController : MonoBehaviour
 
     private void HandleMovement()
     {
-        // still an issue exists. If fwdForce is large enough and fps probably slow enough the player can run past the target axis
-        // then the corection to stick to axis will be obvious
-        // this is a TODO for someone :)
-        // if someone does decide to do this please try to fix this without changing much
-        // you should be able to smooth out the velocity or force somehow
         if(!alive) return;
         var playerPosToTargetedRunAxis = m_RunAxis.x - transform.position.x;
         float strafeSpeed;
@@ -172,16 +168,17 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        ConfigureSpeed();
         Upkeep();
 
-    if (shouldContinueMoving)
-    {
-        HandleMovement();
-        HandleJumpOrSlide();
+        if (shouldContinueMoving)
+        {
+            HandleMovement();
+            HandleJumpOrSlide();
 
-    }
-    if(transform.position.y < -5)
-        Die();
+        }
+        if(transform.position.y < -5)
+            Die();
         
         movementX = 0;
         movementY = 0;
@@ -189,6 +186,12 @@ public class PlayerController : MonoBehaviour
 #if DEBUG_MOVEMENT
         //Debug.Log("Animator state: " + animator.GetBool("isRunningLeft").ToString() + " - " + animator.GetBool("isRunningRight").ToString());
 #endif
+    }
+
+    void ConfigureSpeed()
+    {
+        if(fwdForce < fwdForceCap)
+            fwdForce += 9 * Time.deltaTime;
     }
 
     void Upkeep()
@@ -247,10 +250,10 @@ public class PlayerController : MonoBehaviour
         GameOverUI.GetGameOver();
         
     }
-    //TODO: tags aren't working and obstacle names are "Cube"
+
     void OnCollisionEnter (Collision collision){
         //Kill the player
-        if(collision.collider.name == "Cube")
+        if(collision.collider.tag == "Obstacles")
             Die();
         
     }
