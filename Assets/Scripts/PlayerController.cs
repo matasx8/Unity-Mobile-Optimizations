@@ -83,36 +83,14 @@ public class PlayerController : MonoBehaviour
 
     void OnSwiped(Vector2 dir)
     {
-        //if (!isDoingMovementFromInput)
-        //{
-            Vector2 movementVector = dir;
-            //Debug.Log(movementVector);
-            movementX = movementVector.x;
-            movementY = movementVector.y;
-#if DEBUG_MOVEMENT
-            Debug.Log(movementX);
-#endif 
-            if (movementX != 0.0f)
-                UpdateRunAxis(movementX);
-        //}
+        UpdateRunAxis(dir);
     }
 
     // Called by input system package
     // bruh move this into function to not duplicate code
     private void OnMove(InputValue movementValue)
     {
-        if (!isDoingMovementFromInput)
-        {
-            Vector2 movementVector = movementValue.Get<Vector2>();
-            Debug.Log(movementVector);
-            movementX = movementVector.x;
-            movementY = movementVector.y;
-#if DEBUG_MOVEMENT
-            Debug.Log(movementX);
-#endif 
-            if (movementX != 0.0f)
-                UpdateRunAxis(movementX);
-        }
+        UpdateRunAxis(movementValue.Get<Vector2>());
     }
 
     private void HandleMovement()
@@ -205,22 +183,29 @@ public class PlayerController : MonoBehaviour
         animator.SetBool("isJumping", false);
     }
 
-    private void UpdateRunAxis(float xMovement)
+    private void UpdateRunAxis(Vector2 movementValue)
     {
-        if (CanAnimationBeInterrupted())
+        if (!isDoingMovementFromInput)
         {
-            isDoingMovementFromInput = true;
-            float newRunXvalue = m_RunAxis.x + Mathf.Sign(xMovement) * m_SwipeMovementOnX;
+            movementX = movementValue.x;
+            movementY = movementValue.y;
+#if DEBUG_MOVEMENT
+            Debug.Log(movementX);
+#endif 
+            if (movementX == 0.0f)
+                return;
+
+            float newRunXvalue = m_RunAxis.x + Mathf.Sign(movementX) * m_SwipeMovementOnX;
             m_RunAxis = new Vector3(newRunXvalue, m_RunAxis.y, m_RunAxis.z);
         }
     }
 
     private bool CanAnimationBeInterrupted()
     {
-        bool can = true;// IsOnGround() && !animator.GetBool("isRunningRight") && !animator.GetBool("isRunningLeft");
+        bool can = IsOnGround();// && !animator.GetBool("isRunningRight") && !animator.GetBool("isRunningLeft");
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("run_slide"))
         {
-            if (!(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f))
+            if (!(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 0.9f))
             {
                 return false;
             }
