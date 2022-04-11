@@ -83,8 +83,8 @@ public class PlayerController : MonoBehaviour
 
     void OnSwiped(Vector2 dir)
     {
-        if (!isDoingMovementFromInput)
-        {
+        //if (!isDoingMovementFromInput)
+        //{
             Vector2 movementVector = dir;
             //Debug.Log(movementVector);
             movementX = movementVector.x;
@@ -94,10 +94,11 @@ public class PlayerController : MonoBehaviour
 #endif 
             if (movementX != 0.0f)
                 UpdateRunAxis(movementX);
-        }
+        //}
     }
 
     // Called by input system package
+    // bruh move this into function to not duplicate code
     private void OnMove(InputValue movementValue)
     {
         if (!isDoingMovementFromInput)
@@ -117,6 +118,7 @@ public class PlayerController : MonoBehaviour
     private void HandleMovement()
     {
         if(!alive) return;
+
         var playerPosToTargetedRunAxis = m_RunAxis.x - transform.position.x;
         float strafeSpeed;
         float fwdSpeed;
@@ -145,9 +147,7 @@ public class PlayerController : MonoBehaviour
 
         fwdSpeed = rb.velocity.z > targetFwdSpeed ? fwdForce : 0;
 
-        //if(IsOnGround())
-        
-            rb.AddForce(strafeSpeed * Time.deltaTime, 0.0f, fwdForce * Time.deltaTime);
+        rb.AddForce(strafeSpeed * Time.deltaTime, 0.0f, fwdForce * Time.deltaTime);
     }
 
     private void HandleJumpOrSlide()
@@ -179,7 +179,8 @@ public class PlayerController : MonoBehaviour
             HandleJumpOrSlide();
 
         }
-        if(transform.position.y < -5)
+
+        if(transform.position.y < -5.0f)
             Die();
         
         movementX = 0;
@@ -192,6 +193,7 @@ public class PlayerController : MonoBehaviour
 
     void ConfigureSpeed()
     {
+        // here we speed up over time
         if(fwdForce < fwdForceCap)
             fwdForce += 9 * Time.deltaTime;
     }
@@ -215,7 +217,7 @@ public class PlayerController : MonoBehaviour
 
     private bool CanAnimationBeInterrupted()
     {
-        bool can = IsOnGround() && !animator.GetBool("isRunningRight") && !animator.GetBool("isRunningLeft");
+        bool can = true;// IsOnGround() && !animator.GetBool("isRunningRight") && !animator.GetBool("isRunningLeft");
         if (animator.GetCurrentAnimatorStateInfo(0).IsName("run_slide"))
         {
             if (!(animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1.0f))
