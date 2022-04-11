@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class ScenesManager : MonoBehaviour
 {
+    
+
     public void OnQuitButtonClick()
     {
         SceneManager.LoadScene("MainMenu");
@@ -13,4 +15,6 @@ public class ScenesManager : MonoBehaviour
     {
         SceneManager.LoadScene("MainGame");
     }
+
+    
 }
