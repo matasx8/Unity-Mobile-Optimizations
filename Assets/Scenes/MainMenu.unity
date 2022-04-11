@@ -578,6 +578,16 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3670953950539742056, guid: 471080d78f8fbb34bb0f667663410efd,
+        type: 3}
+      propertyPath: m_Color.g
+      value: 0.72156864
+      objectReference: {fileID: 0}
+    - target: {fileID: 3670953950539742056, guid: 471080d78f8fbb34bb0f667663410efd,
+        type: 3}
+      propertyPath: m_Color.r
+      value: 0.9607844
+      objectReference: {fileID: 0}
     - target: {fileID: 3670953950539742063, guid: 471080d78f8fbb34bb0f667663410efd,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
@@ -799,3 +809,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 78dbe364c36234329b573002202817b0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  optionsScreen: {fileID: 0}
