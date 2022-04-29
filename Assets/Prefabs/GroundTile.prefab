@@ -188,8 +188,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   Obstacles:
-  - {fileID: 7322759411840648470, guid: 5bc817730f8c9424a9bd754bf55e4280, type: 3}
-  - {fileID: 5676308508659517376, guid: 732f6b0ec2f30c746b98d0f6b0e627be, type: 3}
+  - {fileID: 6537858438618138760, guid: 3be17c9267a096f4b99a86c4ead1de68, type: 3}
+  - {fileID: 8747998382059863964, guid: 19bd2a7fb93a74f4194795b3447c7674, type: 3}
   - {fileID: 6391404137161603232, guid: 6c4693902195cfc4a882412447a68076, type: 3}
   platformRenderer: {fileID: 4639948706524645508, guid: 48ab8449fad3e6f44b372973640a3423,
     type: 3}
