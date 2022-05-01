@@ -39,50 +39,15 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 7082819601868073897}
     m_Modifications:
-    - target: {fileID: 904880066015209261, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 1295827931027253353, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2694980721370655951, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 4728507642590644966, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
         type: 3}
       propertyPath: m_Name
       value: SM_MH_01_Stone_Stairs_Base_01
       objectReference: {fileID: 0}
-    - target: {fileID: 4728507642590644966, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_TagString
-      value: Obstacles
-      objectReference: {fileID: 0}
     - target: {fileID: 5392172188795506780, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
         type: 3}
       propertyPath: m_RootOrder
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392172188795506780, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_LocalScale.x
-      value: 1.9710937
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392172188795506780, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_LocalScale.y
-      value: 0.9875
-      objectReference: {fileID: 0}
-    - target: {fileID: 5392172188795506780, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_LocalScale.z
-      value: 0.65875
       objectReference: {fileID: 0}
     - target: {fileID: 5392172188795506780, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
         type: 3}
@@ -132,11 +97,6 @@ PrefabInstance:
     - target: {fileID: 5392172188795506780, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 9029372965268622128, guid: 0b8c09bd20fdd44dda618d68abeb2b6a,
-        type: 3}
-      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []

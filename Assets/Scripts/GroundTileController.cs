@@ -7,12 +7,15 @@ public class GroundTileController: MonoBehaviour
 {
     GroundSpawner groundSpawner;
     [SerializeField] public List<GameObject> Obstacles;
+    [SerializeField] public List<GameObject> Collectibles;
     [SerializeField] private Renderer platformRenderer;
 
     [Header("Obstacle Settings")]
     [SerializeField] private int numberOfObstaclesToSpawn;
 
     List<Vector3> Spawns;
+    List<Vector3> CollectibleSpawns;
+    List<byte> SpawnsForCollectibles;
 
     void Start()
     {
@@ -25,12 +28,6 @@ public class GroundTileController: MonoBehaviour
         Destroy(gameObject, 1);
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
     GameObject GetRandomObstacle()
     {
         return Obstacles[Random.Range(0, 3)];
@@ -41,24 +38,18 @@ public class GroundTileController: MonoBehaviour
         return Obstacles[Random.Range(0, exclusive)];
     }
 
-
-    void SpawnObstacles()
+    void DoSpawnObstacles(List<byte> PatternForObstacles)
     {
-        // get rect of platform
-        // divide up into an array of spawn points depending on difficulty level
-        CalcSpawnPointsForObstacles();
-        // spawn obstacles
-        var PatternForObstacles = GetRandomPatternForObstacles(Spawns.Count, 0xdeadbeef);
 
-        for (int i = 0; i < Spawns.Count; i+= 3)
+        for (int i = 0; i < Spawns.Count; i += 3)
         {
-            int numSpawns = 0;
-            for(int j = 0; j < 3; j++)
+            int numSpawnsForRow = 0;
+            for (int j = 0; j < 3; j++)
             {
-                numSpawns += PatternForObstacles[i + j] ? 1 : 0;
+                numSpawnsForRow += PatternForObstacles[i + j] > 0b0 ? 1 : 0;
             }
 
-            if(numSpawns == 3)
+            if (numSpawnsForRow == 3)
             {
 
                 // lets make sure we don't get 3 regular obstacles in a row
@@ -66,7 +57,7 @@ public class GroundTileController: MonoBehaviour
                 int determinedPassableIdx = Random.Range(0, 3);
                 for (int j = 0; j < 3; j++)
                 {
-                    if(j != determinedPassableIdx)
+                    if (j != determinedPassableIdx)
                         Instantiate(GetRandomObstacle(), Spawns[i + j], Quaternion.identity, transform);
                     else
                         Instantiate(GetRandomRangeObstacle(2), Spawns[i + j], Quaternion.identity, transform);
@@ -74,16 +65,110 @@ public class GroundTileController: MonoBehaviour
             }
             else
             {
-                for(int j = 0; j < 3; j++)
+                for (int j = 0; j < 3; j++)
                 {
-                    if(PatternForObstacles[i + j])
+                    if (PatternForObstacles[i + j] > 0b0)
                     {
                         Instantiate(GetRandomObstacle(), Spawns[i + j], Quaternion.identity, transform);
                     }
                 }
             }
         }
+    }
 
+    void SpawnObstacles()
+    {
+        // get rect of platform
+        // divide up into an array of spawn points depending on difficulty level
+        CalcSpawnPointsForObstacles();
+        // spawn obstacles
+        // we get spawn grid here, e.g.:
+        //      0 1 1
+        //      1 1 1
+        //      0 1 1
+        var Pattern = GetRandomPatternForObstacles(Spawns.Count, 0xdeadbeef);
+        DoSpawnObstacles(Pattern);
+
+        CalcSpawnPointsForCollectibles(Pattern);
+        DoSpawnCollectibles();
+
+
+
+    }
+
+    private void DoSpawnCollectibles()
+    {
+        for(int i = 0; i < SpawnsForCollectibles.Count; i++)
+        {
+            if (SpawnsForCollectibles[i] == 4)
+            {
+                Instantiate(Collectibles[0], CollectibleSpawns[i], Quaternion.identity, transform);
+            }
+        }
+    }
+
+    private void CalcSpawnPointsForCollectibles(List<byte> pattern)
+    {
+        var bounds = platformRenderer.bounds;
+        var platformCenter = bounds.center;
+        // platform rect in world coordinates
+        var platformRect = new Rect(platformCenter.x - bounds.extents.x, platformCenter.z + bounds.extents.z, bounds.size.x, bounds.size.z);
+
+        var numSpawnPoints = numberOfObstaclesToSpawn * 3;
+
+        var TransformsForSpawns = FindTransforms(numSpawnPoints, platformRect);
+        CollectibleSpawns = TransformsForSpawns;
+
+        SpawnsForCollectibles = PopulateGridWithObstacles(pattern);
+        PlaceSpawnsForCollectibles(SpawnsForCollectibles);
+    }
+
+    private void PlaceSpawnsForCollectibles(List<byte> grid)
+    {
+        Graph g = new Graph(grid.Count, grid.Count - 2);
+
+        for(int i = 3; i < grid.Count; i+=3)
+        {
+            for(int j = 0; j < 3; j++)
+            {
+                for(int k = 1; k <= 3; k++)
+                {
+                    if (j == 0 && k == 1)
+                        continue;
+                    if (j == 2 && k == 3)   // lets edges between verts that are far away to the side
+                        continue;
+
+                    if ((grid[i - k] & 1) == 0 && (grid[i+j] & 1) == 0)
+                        g.AddEdge(i - k, i + j);
+                }
+            }
+        }
+
+        g.DFS(1);
+        while (g.path.Count > 0)
+            grid[g.path.Pop()] |= 4;
+    }
+
+    private List<byte> PopulateGridWithObstacles(List<byte> Pattern)
+    {
+        int j = 6;
+        int patternIdx = 0;
+        List<byte> grid = new List<byte>();
+        for (int i = 0; i < CollectibleSpawns.Count; i++)
+        {
+            if (j <= 3)
+            {
+                grid.Add(Pattern[patternIdx++]);
+            } 
+            else
+                grid.Add(0);
+
+            j--;
+
+            if (j == 0)
+                j = 9;
+        }
+        return grid;
     }
 
     // We can use this to generate something more fancy with the randomness
@@ -91,18 +176,20 @@ public class GroundTileController: MonoBehaviour
     // len - should be divisible by 3
     // seed (doesnt have to be uint) - use seed to make random generation same each play
     // dont actually need seed - remove
-    // TODO: Improve this pls. Like currently I spawn two obstacles every row, maybe spawn 1-2
-    List<bool> GetRandomPatternForObstacles(int len, uint seed)
+    List<byte> GetRandomPatternForObstacles(int len, uint seed)
     {
-        List<bool> Pattern = new List<bool>();
+        List<byte> Pattern = new List<byte>();
 
         for (int i = 0; i < len; i += 3)
         {
             int idxForNoObstacle = Random.Range(0, 4);
 
             for (int j = 0; j < 3; j++)
-                Pattern.Add(j != idxForNoObstacle);
+                Pattern.Add((byte)(j != idxForNoObstacle ? 0b1 : 0b0));
 
+            if (idxForNoObstacle == 3)
+                for (int j = 0; j < 3; j++)
+                    Pattern[i + j]++;
         }
 
         return Pattern;
@@ -156,10 +243,13 @@ public class GroundTileController: MonoBehaviour
 
     private void OnDrawGizmos()
     {
-        foreach(var tf in Spawns)
+        int i = 0;
+        foreach(var tf in CollectibleSpawns)
         {
-        Gizmos.DrawCube(tf, new Vector3(0.5f, 10, 0.5f));
+            if((SpawnsForCollectibles[i++] & 4) > 0)
+                Gizmos.DrawCube(tf, new Vector3(0.5f, 10, 0.5f));
 
         }
     }
 }
+
