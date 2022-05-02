@@ -6,8 +6,6 @@ using UnityEngine;
 public class GroundTileController: MonoBehaviour
 {
     GroundSpawner groundSpawner;
-    [SerializeField] public List<GameObject> Obstacles;
-    [SerializeField] public List<GameObject> Collectibles;
     [SerializeField] private Renderer platformRenderer;
 
     [Header("Obstacle Settings")]
@@ -16,26 +14,33 @@ public class GroundTileController: MonoBehaviour
     List<Vector3> Spawns;
     List<Vector3> CollectibleSpawns;
     List<byte> SpawnsForCollectibles;
+    List<GameObject> CoinRefs;
+    List<KeyValuePair<int, GameObject>> ObstacleRefs;
 
-    void Start()
+    void Awake()
     {
+        CoinRefs = new List<GameObject>();
+        ObstacleRefs = new List<KeyValuePair<int, GameObject>>();
+        Debug.Log("Started!");
         groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
+        //SpawnObstacles();
+    }
+
+    public void SpawnObstaclesAndCollectibles()
+    {
         SpawnObstacles();
     }
     private void OnTriggerExit(Collider other)
     {
         groundSpawner.SpawnTile();
-        Destroy(gameObject, 1);
-    }
+        groundSpawner.ReleaseTile(gameObject);
+        foreach (var coin in CoinRefs)
+            groundSpawner.ReleaseCoin(coin);
+        foreach (var pair in ObstacleRefs)
+            groundSpawner.ReleaseObstacle(pair.Key, pair.Value);
 
-    GameObject GetRandomObstacle()
-    {
-        return Obstacles[Random.Range(0, 3)];
-    }
-
-    GameObject GetRandomRangeObstacle(int exclusive)
-    {
-        return Obstacles[Random.Range(0, exclusive)];
+        CoinRefs.Clear();
+        ObstacleRefs.Clear();
     }
 
     void DoSpawnObstacles(List<byte> PatternForObstacles)
@@ -58,9 +63,19 @@ public class GroundTileController: MonoBehaviour
                 for (int j = 0; j < 3; j++)
                 {
                     if (j != determinedPassableIdx)
-                        Instantiate(GetRandomObstacle(), Spawns[i + j], Quaternion.identity, transform);
+                    {
+                        int idx = Random.Range(0, 3);
+                        var obstacle = groundSpawner.GetObstacle(idx);
+                        obstacle.transform.position = Spawns[i + j];
+                        ObstacleRefs.Add(new KeyValuePair<int, GameObject>(idx, obstacle));
+                    }
                     else
-                        Instantiate(GetRandomRangeObstacle(2), Spawns[i + j], Quaternion.identity, transform);
+                    {
+                        int idx = Random.Range(0, 2);
+                        var obstacle = groundSpawner.GetObstacle(idx);
+                        obstacle.transform.position = Spawns[i + j];
+                        ObstacleRefs.Add(new KeyValuePair<int, GameObject>(idx, obstacle));
+                    }
                 }
             }
             else
@@ -69,7 +84,10 @@ public class GroundTileController: MonoBehaviour
                 {
                     if (PatternForObstacles[i + j] > 0b0)
                     {
-                        Instantiate(GetRandomObstacle(), Spawns[i + j], Quaternion.identity, transform);
+                        int idx = Random.Range(0, 3);
+                        var obstacle = groundSpawner.GetObstacle(idx);
+                        obstacle.transform.position = Spawns[i + j];
+                        ObstacleRefs.Add(new KeyValuePair<int, GameObject>(idx, obstacle));
                     }
                 }
             }
@@ -102,7 +120,9 @@ public class GroundTileController: MonoBehaviour
         {
             if (SpawnsForCollectibles[i] == 4)
             {
-                Instantiate(Collectibles[0], CollectibleSpawns[i], Quaternion.identity, transform);
+                var coin = groundSpawner.GetCoin();// (Collectibles[0], CollectibleSpawns[i], Quaternion.identity, transform);
+                coin.transform.position = CollectibleSpawns[i];
+                CoinRefs.Add(coin);
             }
         }
     }

@@ -5,6 +5,12 @@ using UnityEngine;
 public class CoinBehaviour : MonoBehaviour
 {
     [SerializeField] float rotSpeed;
+    private GroundSpawner groundSpawner;
+
+    private void Start()
+    {
+        groundSpawner = GameObject.FindObjectOfType<GroundSpawner>();
+    }
 
     // Update is called once per frame
     void Update()
@@ -16,7 +22,7 @@ public class CoinBehaviour : MonoBehaviour
     {
         if(other.tag == "Player")
         {
-            Destroy(gameObject, 0.1f);
+            groundSpawner.ReleaseCoin(gameObject);
         }
     }
 }
