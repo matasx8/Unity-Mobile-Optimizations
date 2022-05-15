@@ -8,9 +8,9 @@ public class ChangeLightColor : MonoBehaviour
     public Light targetlight;
     void OnEnable()
     {
-        int randomRed = Random.Range(0,256);
-        int randomGreen = Random.Range(0,256);
-        int randomBlue = Random.Range(0,256);
+        int randomRed = Random.Range(100,256);
+        int randomGreen = Random.Range(100,256);
+        int randomBlue = Random.Range(100,256);
         myColor = new Color(randomRed, randomGreen, randomBlue);
         targetlight.color = myColor;
     }
